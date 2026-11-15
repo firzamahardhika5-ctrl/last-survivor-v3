@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#080d12">
+  <title>LAST SURVIVOR V3 — FIRZA</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--lime:#ff454f;--red:#ff4b4b;--bg:#08090d;--panel:#11131a;--muted:#8b9aa5}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#321a20 0%,#08090d 58%);color:#f4f7f8;font-family:Inter,Arial,sans-serif;display:flex;justify-content:center;padding:18px}
+.shell{width:min(1100px,100%)}.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.brand{display:flex;align-items:center;gap:11px}.brand-mark{font-size:30px;color:var(--red);filter:drop-shadow(0 0 10px #ff454f88)}.brand b{display:block;font:900 22px 'Barlow Condensed',sans-serif;letter-spacing:2px}.brand small{font-size:9px;letter-spacing:3px;color:var(--muted)}.creator{font-size:10px;letter-spacing:2px;color:var(--muted)}.creator strong{color:var(--lime);font-size:12px}
+.game-wrap{position:relative;overflow:hidden;border:1px solid #31414b;border-radius:15px;background:#0b1217;box-shadow:0 22px 70px #0009;aspect-ratio:16/9;min-height:390px}.game-wrap canvas{display:block;width:100%;height:100%;touch-action:none}
+.hud{position:absolute;inset:14px 16px auto;display:flex;justify-content:space-between;pointer-events:none;text-shadow:0 2px 5px #000}.hud-left{display:flex;gap:9px}.stat{background:#0a111bdc;border:1px solid #ffffff20;border-radius:8px;padding:7px 12px;min-width:64px;backdrop-filter:blur(8px)}.stat small,.health-label{display:block;font-size:9px;letter-spacing:1.7px;color:#aab8bf}.stat b{font:800 22px 'Barlow Condensed',sans-serif}.stat:nth-child(3) b{color:var(--lime)}.hud-right{width:180px;background:#0a111bdc;border:1px solid #ffffff20;border-radius:8px;padding:8px 10px}.health-label{display:flex;justify-content:space-between}.health-label b{color:#fff;font-size:10px}.health-track{height:7px;background:#303b42;border-radius:10px;margin:6px 0;overflow:hidden}.health-track div{height:100%;width:100%;background:linear-gradient(90deg,#8de34a,#d5ff57);border-radius:10px;transition:width .2s}.weapon-readout{display:flex;justify-content:space-between;font-size:10px;font-weight:800;letter-spacing:1px;color:var(--lime)}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#05090dc9;backdrop-filter:blur(5px);padding:16px;z-index:5}.hidden{display:none!important}.panel{width:min(470px,100%);padding:28px;background:linear-gradient(145deg,#17232c,#0d141b);border:1px solid #53616a66;border-radius:14px;box-shadow:0 20px 65px #000b;text-align:center}.hero-panel{width:min(620px,100%)}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 18px;text-align:left}.setup-field{background:#090d13;border:1px solid #3b2930;border-radius:8px;padding:10px}.setup-field label{display:block;color:#aab4bd;font-size:9px;letter-spacing:1.5px;font-weight:800;margin-bottom:7px}.setup-field select{width:100%;background:#1a2029;color:#fff;border:1px solid #46505a;border-radius:6px;padding:10px;font-weight:700}.save-line{color:#aab4bd;font-size:10px;margin-top:12px}.ending-choices{display:grid;gap:9px;margin-top:18px}.ending-choices button{padding:12px;border:1px solid #63313a;border-radius:8px;background:#1c1117;color:#fff;font-weight:800;text-align:left;cursor:pointer}.ending-choices button:hover{border-color:#ff5963;background:#30151c}.ending-choices small{display:block;color:#aebbc2;font-weight:500;margin-top:4px}.ending-title{color:#ff646d}.eyebrow{color:var(--red);font-size:10px;font-weight:800;letter-spacing:4px;margin-bottom:9px}.eyebrow.danger{color:var(--red)}h1,h2{font-family:'Barlow Condensed',Impact,sans-serif;margin:0;line-height:.95;letter-spacing:2px}h1{font-size:clamp(48px,8vw,82px)}h1 em{font-style:normal;color:var(--lime)}h2{font-size:42px}.panel p{font-size:13px;line-height:1.7;color:#aebbc2;max-width:420px;margin:15px auto 22px}.primary,.secondary{border:0;border-radius:7px;padding:13px 20px;font-weight:900;letter-spacing:1px;cursor:pointer}.primary{background:linear-gradient(135deg,#ff525b,#c91f32);color:#fff;box-shadow:0 5px 22px #ff263c40}.primary:hover{filter:brightness(1.1);transform:translateY(-1px)}.primary span{margin-left:15px}.mini-info{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:20px;color:#8fa0a9;font-size:9px;letter-spacing:1px}.result-grid{display:flex;justify-content:center;gap:10px;margin:23px 0}.result-grid div{background:#0a1118;padding:12px;border-radius:8px;min-width:90px}.result-grid small{display:block;font-size:8px;color:var(--muted);letter-spacing:1px}.result-grid b{display:block;font:800 25px 'Barlow Condensed';color:var(--lime);margin-top:5px}
+.shop-panel{width:min(620px,100%);text-align:left;padding:22px}.shop-head{display:flex;align-items:center;justify-content:space-between}.shop-head h2{font-size:37px}.wallet{background:#35191f;color:#ff6870;padding:9px 13px;border-radius:8px}.shop-desc{font-size:11px!important;margin:8px 0 14px!important}.weapon-list{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:270px;overflow:auto}.weapon-card{background:#0a1219;border:1px solid #33424b;border-radius:9px;padding:12px}.weapon-card.active{border-color:var(--red);box-shadow:inset 0 0 0 1px #ff454f55}.weapon-card b{font:800 21px 'Barlow Condensed';letter-spacing:1px}.weapon-card p{font-size:10px!important;margin:4px 0 10px!important;line-height:1.4}.weapon-card button{width:100%;padding:8px;border:0;border-radius:5px;background:#293842;color:#fff;font-size:10px;font-weight:800;cursor:pointer}.weapon-card button.buy{background:var(--red);color:#fff}.weapon-card button:disabled{opacity:.5;cursor:default}.shop-foot{display:flex;align-items:center;justify-content:space-between;margin-top:15px;color:#8d9da5;font-size:10px}.secondary{background:#293842;color:white;padding:10px 13px;font-size:10px}
+.bottom-actions{position:absolute;right:14px;bottom:13px;display:flex;gap:7px;z-index:2}.bottom-actions button{background:#0a111bdc;color:#dce6e9;border:1px solid #ffffff35;border-radius:6px;padding:8px 11px;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer}.bottom-actions button:first-child{color:#ff6870}
+.boss-alert{position:absolute;top:23%;left:50%;transform:translateX(-50%);background:#7e1717e8;color:white;border:1px solid #ff7777;padding:12px 25px;border-radius:7px;font:900 24px 'Barlow Condensed';letter-spacing:3px;z-index:4;box-shadow:0 0 35px #ff242477}.toast{position:absolute;top:28%;left:50%;transform:translateX(-50%);background:#101b22ee;border:1px solid var(--lime);color:#ff6870;padding:10px 17px;border-radius:7px;font-size:12px;font-weight:800;z-index:6;white-space:nowrap}
+.mobile-controls{display:none;position:absolute;left:15px;right:15px;bottom:57px;justify-content:space-between;align-items:end;z-index:3;pointer-events:none}.mobile-controls button{pointer-events:auto;touch-action:none}.dpad>button,.dpad div button{width:39px;height:39px;border:1px solid #ffffff55;border-radius:8px;background:#111c25bb;color:white;font-size:16px}.dpad>button{display:block;margin:auto auto 4px}.dpad div{display:flex;gap:4px}.fire-btn{width:67px;height:67px;border-radius:50%;border:2px solid #ff7777;background:#9d2929cc;color:white;font-weight:900;letter-spacing:1px;box-shadow:0 0 20px #ff333344}
+footer{display:flex;justify-content:space-between;color:#60717b;font-size:9px;letter-spacing:1.5px;padding:12px 3px}footer span{color:#8a999f}
+@media(max-width:650px){body{padding:8px}.topbar{height:48px}.brand b{font-size:18px}.creator{font-size:8px}.game-wrap{aspect-ratio:4/5;min-height:520px}.hud{inset:9px 8px auto}.hud-left{gap:4px}.stat{min-width:49px;padding:5px 7px}.stat small{font-size:7px}.stat b{font-size:18px}.hud-right{width:130px;padding:6px}.health-label{font-size:7px}.health-label b{font-size:8px}.weapon-readout{font-size:8px}.mobile-controls{display:flex}.bottom-actions{right:8px;bottom:8px}.bottom-actions button{font-size:9px;padding:7px}.mini-info{gap:8px;font-size:8px}.panel{padding:22px 16px}.weapon-list{grid-template-columns:1fr 1fr;max-height:250px}.shop-panel{padding:15px}.shop-head h2{font-size:30px}.shop-foot{gap:8px}.shop-foot span{display:none}footer{font-size:8px}footer span{display:none}}
+@media(hover:none){.mobile-controls{display:flex}}
+
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">☣</span><div><b>LAST SURVIVOR</b><small>ZOMBIE APOCALYPSE</small></div></div>
+      <div class="creator">CREATED BY <strong>FIRZA</strong></div>
+    </header>
+    <section class="game-wrap">
+      <canvas id="game" aria-label="Arena permainan Last Survivor"></canvas>
+      <div class="hud" id="hud">
+        <div class="hud-left">
+          <div class="stat"><small>WAVE</small><b id="wave">1</b></div>
+          <div class="stat"><small>ZOMBIES</small><b id="zombies">0</b></div>
+          <div class="stat"><small>COINS</small><b id="coins">0</b></div>
+        </div>
+        <div class="hud-right">
+          <div class="health-label"><span>HEALTH</span><b id="healthText">100 / 100</b></div>
+          <div class="health-track"><div id="healthBar"></div></div>
+          <div class="weapon-readout"><span id="weaponName">PISTOL</span><span id="ammoText">∞</span></div>
+        </div>
+      </div>
+      <div class="overlay" id="menu">
+        <div class="panel hero-panel">
+          <div class="eyebrow">SURVIVE THE NIGHT • V3</div>
+          <h1>LAST <em>SURVIVOR</em></h1>
+          <p>Kota telah runtuh. Pilih survivor dan tingkat kesulitanmu, lalu bertahan dari gerombolan yang terus datang.</p>
+          <div class="setup-grid">
+            <div class="setup-field"><label for="characterSelect">KARAKTER SURVIVOR</label><select id="characterSelect"><option value="crimson">CRIMSON — Red Ops</option><option value="shadow">SHADOW — Night Scout</option><option value="hazmat">HAZMAT — Bio Guard</option><option value="arctic">ARCTIC — Frost Unit</option></select></div>
+            <div class="setup-field"><label for="difficultySelect">TINGKAT KESULITAN</label><select id="difficultySelect"><option value="easy">EASY — Santai</option><option value="normal" selected>NORMAL — Seimbang</option><option value="hard">HARD — Menantang</option></select></div>
+          </div>
+          <button class="primary" id="startBtn">MULAI BERTAHAN <span>▶</span></button>
+          <div class="save-line" id="saveLine">BEST WAVE: 0 • PROGRES TERSIMPAN DI PERANGKAT</div>
+          <div class="mini-info"><span>⌨ WASD / ARROW</span><span>▣ TOUCH CONTROL</span><span>☠ BOSS TIAP 10 WAVE</span></div>
+        </div>
+      </div>
+      <div class="overlay hidden" id="gameOver">
+        <div class="panel">
+          <div class="eyebrow danger">MISSION FAILED</div><h2>YOU WERE OVERRUN</h2>
+          <div class="result-grid"><div><small>WAVE TERCAPAI</small><b id="finalWave">1</b></div><div><small>TOTAL KOIN</small><b id="finalCoins">0</b></div><div><small>ZOMBIE DIKALAHKAN</small><b id="finalKills">0</b></div></div>
+          <button class="primary" id="retryBtn">COBA LAGI ↻</button>
+        </div>
+      </div>
+      <div class="overlay hidden" id="ending">
+        <div class="panel"><div class="eyebrow danger">FINAL DECISION</div><h2 class="ending-title">THE LAST CHOICE</h2><p>Gelombang 10 berhasil dilewati. Apa yang akan dilakukan survivor?</p><div class="ending-choices"><button data-ending="rescue">01 / SELAMATKAN PENYINTAS<small>Buka jalur evakuasi dan tinggalkan kota bersama mereka.</small></button><button data-ending="destroy">02 / HANCURKAN SARANG<small>Akhiri sumber wabah agar kota punya harapan.</small></button><button data-ending="escape">03 / KABUR SENDIRIAN<small>Pilih keselamatan diri dan pergi sebelum terlambat.</small></button></div></div>
+      </div>
+      <div class="overlay hidden" id="endingResult"><div class="panel"><div class="eyebrow">STORY COMPLETE</div><h2 id="endingName" class="ending-title">ENDING</h2><p id="endingText"></p><button class="primary" id="endingRetry">MAIN LAGI ↻</button></div></div>
+      <div class="overlay hidden" id="pause">
+        <div class="panel"><div class="eyebrow">TAKE A BREATH</div><h2>PAUSED</h2><button class="primary" id="resumeBtn">LANJUTKAN ▶</button></div>
+      </div>
+      <div class="overlay hidden" id="shop">
+        <div class="panel shop-panel">
+          <div class="shop-head"><div><div class="eyebrow">SUPPLY STATION</div><h2>WEAPON SHOP</h2></div><div class="wallet">🪙 <b id="shopCoins">0</b></div></div>
+          <p class="shop-desc">Gunakan koin hasil mengalahkan zombie untuk membeli senjata. Senjata yang sudah dibeli bisa dipakai kapan saja.</p>
+          <div class="weapon-list" id="weaponList"></div>
+          <div class="shop-foot"><span>ESC untuk menutup</span><button class="secondary" id="closeShop">KEMBALI KE ARENA</button></div>
+        </div>
+      </div>
+      <div class="boss-alert hidden" id="bossAlert">☠ BOSS INCOMING ☠</div>
+      <div class="toast hidden" id="toast"></div>
+      <div class="mobile-controls" id="mobileControls">
+        <div class="dpad">
+          <button data-dir="up">▲</button><div><button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button></div>
+        </div>
+        <button class="fire-btn" id="fireBtn">FIRE</button>
+      </div>
+      <div class="bottom-actions"><button id="shopBtn">🛒 SHOP</button><button id="pauseBtn">Ⅱ PAUSE</button></div>
+    </section>
+    <footer>© FIRZA • HTML SURVIVAL GAME <span>Survive. Upgrade. Repeat.</span></footer>
+  </main>
+  <script>
+(() => {
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+const ui={wave:$('wave'),zombies:$('zombies'),coins:$('coins'),healthText:$('healthText'),healthBar:$('healthBar'),weaponName:$('weaponName'),ammoText:$('ammoText'),menu:$('menu'),gameOver:$('gameOver'),pause:$('pause'),shop:$('shop'),ending:$('ending'),endingResult:$('endingResult'),shopCoins:$('shopCoins'),weaponList:$('weaponList'),bossAlert:$('bossAlert'),toast:$('toast')};
+let W=960,H=540,scale=1,last=0,raf=0,mode='menu',wave=1,coins=0,kills=0,spawned=0,remaining=0,spawnTimer=0,toastTimer=0,bossAlertTimer=0,shake=0;
+const keys={},touch={up:false,down:false,left:false,right:false,fire:false};
+const weapons=[
+ {id:'pistol',name:'PISTOL',price:0,damage:24,rate:360,bulletSpeed:590,spread:.045,desc:'Senjata awal. Stabil dan gratis.'},
+ {id:'smg',name:'SMG',price:90,damage:13,rate:105,bulletSpeed:650,spread:.13,desc:'Tembakan cepat untuk kerumunan.'},
+ {id:'shotgun',name:'SHOTGUN',price:160,damage:17,rate:720,bulletSpeed:500,spread:.42,pellets:6,desc:'6 peluru menyebar dalam sekali tembak.'},
+ {id:'rifle',name:'ASSAULT RIFLE',price:260,damage:34,rate:220,bulletSpeed:790,spread:.055,desc:'Damage tinggi dan akurasi bagus.'},
+ {id:'plasma',name:'PLASMA GUN',price:420,damage:75,rate:520,bulletSpeed:680,spread:.025,desc:'Energi plasma dengan damage besar.'}
+];
+let owned=new Set(['pistol']),weapon='pistol',player,zombies=[],bullets=[],particles=[],obstacles=[],lastShot=0,score=0,character='crimson',difficulty='normal',endingTriggered=false;
+const rand=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function resize(){const r=canvas.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);W=canvas.width;H=canvas.height;scale=d}
+new ResizeObserver(resize).observe(canvas);resize();
+function reset(){wave=1;coins=0;kills=0;spawned=0;remaining=0;spawnTimer=0;score=0;weapon='pistol';owned=new Set(['pistol']);zombies=[];bullets=[];particles=[];lastShot=0;endingTriggered=false;character=$('characterSelect').value;difficulty=$('difficultySelect').value;const hp=difficulty==='easy'?125:100,speed=difficulty==='hard'?215:230;player={x:W/2,y:H/2,r:14,hp,maxHp:hp,speed,angle:0,invuln:0};makeObstacles();startWave();updateHud()}
+function makeObstacles(){obstacles=[];for(let i=0;i<13;i++){let x=rand(65,W-65),y=rand(65,H-65);if(Math.hypot(x-W/2,y-H/2)>115)obstacles.push({x,y,w:rand(25,58),h:rand(22,50),type:Math.random()>.5?'crate':'barrel'})}}
+function startWave(){spawned=0;remaining=wave*5+5;spawnTimer=1.1;if(wave%10===0){remaining+=1;showBossAlert()};toast(`WAVE ${wave} — ${remaining} ZOMBIE MENDEKAT`)}
+function showBossAlert(){ui.bossAlert.classList.remove('hidden');bossAlertTimer=2.2}
+function toast(s){ui.toast.textContent=s;ui.toast.classList.remove('hidden');toastTimer=2}
+function spawnZombie(boss=false){let side=Math.floor(Math.random()*4),x=side===0?-25:side===1?W+25:rand(0,W),y=side===2?-25:side===3?H+25:rand(0,H);if(Math.hypot(x-player.x,y-player.y)<W*.28){x=x<W/2?-25:W+25;y=rand(0,H)}
+let factor=difficulty==='easy'?.78:difficulty==='hard'?1.35:1;let hp=(22+wave*8)*factor*(boss?16:1),r=boss?39:rand(14,18);zombies.push({x,y,r,hp,maxHp:hp,speed:((boss?38:rand(43,61))+Math.min(wave*2,42))*(difficulty==='hard'?1.16:difficulty==='easy'?.88:1),boss,hit:0,attack:0,kind:boss?'brute':Math.random()>.55?'runner':'walker'})}
+function start(){reset();mode='playing';ui.menu.classList.add('hidden');ui.gameOver.classList.add('hidden');ui.pause.classList.add('hidden');ui.ending.classList.add('hidden');ui.endingResult.classList.add('hidden');last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+function updateHud(){ui.wave.textContent=wave;ui.zombies.textContent=zombies.length+Math.max(0,remaining);ui.coins.textContent=coins;ui.healthText.textContent=`${Math.ceil(player?.hp||0)} / ${player?.maxHp||100}`;ui.healthBar.style.width=`${clamp((player?.hp||0)/(player?.maxHp||100)*100,0,100)}%`;ui.weaponName.textContent=weapons.find(w=>w.id===weapon).name;ui.ammoText.textContent='∞'}
+function openShop(){if(mode!=='playing')return;mode='shop';ui.shop.classList.remove('hidden');ui.shopCoins.textContent=coins;renderShop()}
+function renderShop(){ui.weaponList.innerHTML='';weapons.forEach(w=>{const card=document.createElement('div');card.className='weapon-card'+(weapon===w.id?' active':'');const has=owned.has(w.id);card.innerHTML=`<b>${w.name}</b><p>${w.desc}<br>Damage: ${w.damage} • Harga: ${w.price===0?'GRATIS':w.price+' koin'}</p>`;const btn=document.createElement('button');btn.textContent=weapon===w.id?'SEDANG DIPAKAI':has?'PAKAI':`BELI • ${w.price} 🪙`;btn.disabled=weapon===w.id||(!has&&coins<w.price);if(!has&&coins>=w.price)btn.className='buy';btn.onclick=()=>{if(has){weapon=w.id;toast(`${w.name} DIPAKAI`)}else if(coins>=w.price){coins-=w.price;owned.add(w.id);weapon=w.id;toast(`${w.name} BERHASIL DIBELI!`)}ui.shopCoins.textContent=coins;updateHud();renderShop()};card.appendChild(btn);ui.weaponList.appendChild(card)})}
+function closeShop(){if(mode==='shop'){mode='playing';ui.shop.classList.add('hidden');last=performance.now()}}
+function pause(){if(mode==='playing'){mode='paused';ui.pause.classList.remove('hidden')}}
+function resume(){if(mode==='paused'){mode='playing';ui.pause.classList.add('hidden');last=performance.now()}}
+function endGame(){if(mode==='over')return;mode='over';cancelAnimationFrame(raf);touch.up=touch.down=touch.left=touch.right=touch.fire=false;Object.keys(keys).forEach(k=>keys[k]=false);ui.finalWave.textContent=wave;ui.finalCoins.textContent=coins;ui.finalKills.textContent=kills;ui.gameOver.classList.remove('hidden');try{saveProgress()}catch(err){console.warn('Progress tidak dapat disimpan:',err)}}
+function circle(x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
+function drawArena(t){ctx.fillStyle='#151417';ctx.fillRect(0,0,W,H);let grid=48*scale;ctx.strokeStyle='#30262a';ctx.lineWidth=1;for(let x=0;x<W;x+=grid){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=0;y<H;y+=grid){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+ctx.fillStyle='#251e22';for(let i=0;i<18;i++){let x=(i*173%W),y=(i*97%H);circle(x,y,2*scale,'#574047')}
+obstacles.forEach(o=>{ctx.save();ctx.translate(o.x,o.y);ctx.fillStyle='#05090c88';ctx.fillRect(-o.w/2+5,-o.h/2+7,o.w,o.h);ctx.fillStyle=o.type==='crate'?'#584044':'#34373b';ctx.fillRect(-o.w/2,-o.h/2,o.w,o.h);ctx.strokeStyle=o.type==='crate'?'#a05b5e':'#77777b';ctx.lineWidth=2;ctx.strokeRect(-o.w/2,-o.h/2,o.w,o.h);if(o.type==='crate'){ctx.beginPath();ctx.moveTo(-o.w/2,-o.h/2);ctx.lineTo(o.w/2,o.h/2);ctx.moveTo(o.w/2,-o.h/2);ctx.lineTo(-o.w/2,o.h/2);ctx.stroke()}else{ctx.fillStyle='#aab4b8';ctx.fillRect(-o.w/2+4,-o.h/2+4,o.w-8,4)}ctx.restore()});
+let vignette=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.2,W/2,H/2,Math.max(W,H)*.68);vignette.addColorStop(0,'#00000000');vignette.addColorStop(1,'#020609b0');ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H)}
+function drawPlayer(){const suits={crimson:['#b52d3a','#e9b6a9'],shadow:['#202a35','#9ba7b5'],hazmat:['#b5a52b','#d9d0a0'],arctic:['#7eabbc','#d6e5eb']},c=suits[character]||suits.crimson;ctx.save();ctx.translate(player.x,player.y);ctx.rotate(player.angle);circle(2,5,18,'#000b');circle(0,0,15,c[0]);circle(0,-2,9,'#22252b');ctx.fillStyle=c[1];ctx.fillRect(-6,-5,12,5);ctx.fillStyle='#161a20';ctx.fillRect(5,-5,23,10);ctx.fillStyle='#ff5c65';ctx.fillRect(23,-3,5,6);ctx.restore();circle(player.x,player.y-19,3,'#ff5963')}
+function drawZombie(z){ctx.save();ctx.translate(z.x,z.y);let pulse=1+Math.sin(performance.now()/115)*.055;ctx.scale(pulse,pulse);circle(3,7,z.r+4,'#000b');if(z.boss){circle(0,0,z.r,'#4b2029');circle(-z.r*.52,-z.r*.58,z.r*.28,'#6b3039');circle(z.r*.52,-z.r*.58,z.r*.28,'#6b3039');ctx.strokeStyle='#d34c55';ctx.lineWidth=5;ctx.beginPath();ctx.arc(0,0,z.r+5,0,Math.PI*2);ctx.stroke()}else{circle(0,0,z.r,z.kind==='runner'?'#69764a':'#53644a');circle(-z.r*.62,z.r*.5,z.r*.35,'#354235');circle(z.r*.62,z.r*.5,z.r*.35,'#354235')}circle(-z.r*.34,-z.r*.15,z.r*.22,'#e1d7a4');circle(z.r*.34,-z.r*.15,z.r*.22,'#e1d7a4');circle(-z.r*.34,-z.r*.15,z.r*.11,'#b8202e');circle(z.r*.34,-z.r*.15,z.r*.11,'#b8202e');ctx.strokeStyle='#251b1d';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-z.r*.38,z.r*.4);ctx.lineTo(-z.r*.12,z.r*.55);ctx.lineTo(z.r*.15,z.r*.4);ctx.stroke();ctx.restore();if(z.boss||z.hp<z.maxHp){let bw=z.r*2;ctx.fillStyle='#351b1e';ctx.fillRect(z.x-bw/2,z.y-z.r-12,bw,5);ctx.fillStyle=z.boss?'#ff414b':'#a7e65c';ctx.fillRect(z.x-bw/2,z.y-z.r-12,bw*clamp(z.hp/z.maxHp,0,1),5)}}
+function draw(){drawArena(performance.now());bullets.forEach(b=>{circle(b.x,b.y,b.r+2,'#f7bd55');circle(b.x,b.y,b.r,'#fff2b5')});zombies.forEach(drawZombie);particles.forEach(p=>{ctx.globalAlpha=clamp(p.life/p.max,0,1);circle(p.x,p.y,p.r,p.color);ctx.globalAlpha=1});drawPlayer()}
+function shoot(){const w=weapons.find(x=>x.id===weapon),now=performance.now();if(now-lastShot<w.rate)return;let target=null,dist=Infinity;for(const z of zombies){let d=Math.hypot(z.x-player.x,z.y-player.y);if(d<dist){dist=d;target=z}}if(!target)return;let base=Math.atan2(target.y-player.y,target.x-player.x);player.angle=base;for(let i=0;i<(w.pellets||1);i++){let a=base+rand(-w.spread,w.spread);bullets.push({x:player.x+Math.cos(a)*20,y:player.y+Math.sin(a)*20,vx:Math.cos(a)*w.bulletSpeed*scale,vy:Math.sin(a)*w.bulletSpeed*scale,damage:w.damage,r:weapon==='plasma'?5:3,life:1.2})}lastShot=now;for(let i=0;i<4;i++)particles.push({x:player.x+Math.cos(base)*23,y:player.y+Math.sin(base)*23,vx:rand(-50,50),vy:rand(-50,50),r:rand(2,4),life:.16,max:.16,color:'#ffd477'})}
+function update(dt){if(!player)return;let dx=(keys.d||keys.arrowright||touch.right?1:0)-(keys.a||keys.arrowleft||touch.left?1:0),dy=(keys.s||keys.arrowdown||touch.down?1:0)-(keys.w||keys.arrowup||touch.up?1:0),len=Math.hypot(dx,dy)||1;if(dx||dy){player.x+=dx/len*player.speed*scale*dt;player.y+=dy/len*player.speed*scale*dt}player.x=clamp(player.x,player.r,W-player.r);player.y=clamp(player.y,player.r,H-player.r);if(touch.fire||keys[' '])shoot();
+spawnTimer-=dt;if(remaining>0&&spawnTimer<=0){let boss=wave%10===0&&spawned===0;spawnZombie(boss);spawned++;remaining--;spawnTimer=Math.max(.22,.95-wave*.025);if(boss)toast('BOSS WAVE! KALAHKAN BOSS!')}
+for(let i=zombies.length-1;i>=0;i--){let z=zombies[i],a=Math.atan2(player.y-z.y,player.x-z.x),d=Math.hypot(player.x-z.x,player.y-z.y);z.x+=Math.cos(a)*z.speed*scale*dt;z.y+=Math.sin(a)*z.speed*scale*dt;if(d<z.r+player.r){z.attack-=dt;if(z.attack<=0&&player.invuln<=0){player.hp-=z.boss?18:8;player.invuln=.45;z.attack=.7;shake=7;if(player.hp<=0){player.hp=0;updateHud();endGame();return}}}}
+player.invuln=Math.max(0,player.invuln-dt);
+for(let i=bullets.length-1;i>=0;i--){let b=bullets[i];b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;let hit=false;for(let j=zombies.length-1;j>=0;j--){let z=zombies[j];if(Math.hypot(b.x-z.x,b.y-z.y)<z.r+b.r){z.hp-=b.damage;z.hit=.1;for(let k=0;k<5;k++)particles.push({x:b.x,y:b.y,vx:rand(-70,70),vy:rand(-70,70),r:rand(2,5),life:.25,max:.25,color:'#8bc66b'});bullets.splice(i,1);hit=true;if(z.hp<=0){zombies.splice(j,1);kills++;let reward=z.boss?100:10;coins+=reward;score+=reward;toast(z.boss?`BOSS DIKALAHKAN! +${reward} KOIN`:`+${reward} KOIN`)}break}}if(!hit&&(b.life<=0||b.x<0||b.y<0||b.x>W||b.y>H))bullets.splice(i,1)}
+for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
+if(remaining===0&&zombies.length===0){if(wave===10&&!endingTriggered){endingTriggered=true;mode='ending';ui.ending.classList.remove('hidden');return}wave++;startWave()}
+if(shake>0)shake=Math.max(0,shake-dt*25);if(toastTimer>0&&(toastTimer-=dt)<=0)ui.toast.classList.add('hidden');if(bossAlertTimer>0&&(bossAlertTimer-=dt)<=0)ui.bossAlert.classList.add('hidden');updateHud()}
+function loop(now){if(mode!=='playing')return;let dt=Math.min((now-last)/1000,.04);last=now;update(dt);if(mode==='playing'){if(shake>0){ctx.save();ctx.translate(rand(-shake,shake),rand(-shake,shake))}draw();if(shake>0)ctx.restore();raf=requestAnimationFrame(loop)}else if(mode==='over'){draw()}}
+function saveProgress(){let old={bestWave:0,totalKills:0};try{old=JSON.parse(localStorage.getItem('lastSurvivorV3')||'{}')}catch(e){}const data={bestWave:Math.max(old.bestWave||0,wave),totalKills:(old.totalKills||0)+kills,lastEnding:old.lastEnding||''};try{localStorage.setItem('lastSurvivorV3',JSON.stringify(data))}catch(e){console.warn('Penyimpanan lokal tidak tersedia:',e)}updateSaveLine()}
+function updateSaveLine(){let data={};try{data=JSON.parse(localStorage.getItem('lastSurvivorV3')||'{}')}catch(e){}const line=$('saveLine');if(line)line.textContent=`BEST WAVE: ${data.bestWave||0} • TOTAL ELIMINATIONS: ${data.totalKills||0} • ${typeof Storage!=='undefined'?'AUTO SAVE':'SESSION ONLY'}`}
+function chooseEnding(kind){const endings={rescue:['HERO OF THE CITY','Kamu membuka jalur evakuasi. Para penyintas berhasil keluar dan membawa harapan baru.'],destroy:['THE CURE BEGINS','Sarang wabah berhasil dihancurkan. Kota masih gelap, tetapi penyebaran akhirnya terhenti.'],escape:['LONE SURVIVOR','Kamu berhasil meninggalkan kota sendirian. Kamu selamat, tetapi nasib para penyintas lain tidak diketahui.']};const [name,desc]=endings[kind];let data={};try{data=JSON.parse(localStorage.getItem('lastSurvivorV3')||'{}')}catch(e){}data.bestWave=Math.max(data.bestWave||0,wave);data.totalKills=(data.totalKills||0)+kills;data.lastEnding=name;localStorage.setItem('lastSurvivorV3',JSON.stringify(data));$('endingName').textContent=name;$('endingText').textContent=desc;ui.ending.classList.add('hidden');ui.endingResult.classList.remove('hidden');mode='over';updateSaveLine()}
+document.querySelectorAll('[data-ending]').forEach(b=>b.addEventListener('click',()=>chooseEnding(b.dataset.ending)));
+updateSaveLine();
+$('startBtn').onclick=start;$('retryBtn').onclick=start;$('endingRetry').onclick=start;$('pauseBtn').onclick=pause;$('resumeBtn').onclick=resume;$('shopBtn').onclick=openShop;$('closeShop').onclick=closeShop;
+window.addEventListener('keydown',e=>{let k=e.key.toLowerCase();keys[k]=true;if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k))e.preventDefault();if(k==='escape'){if(mode==='shop')closeShop();else if(mode==='paused')resume();else if(mode==='playing')pause()}if(k==='e'&&mode==='playing')openShop()});
+window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+document.querySelectorAll('[data-dir]').forEach(btn=>{let dir=btn.dataset.dir;const on=e=>{e.preventDefault();touch[dir]=true},off=e=>{e.preventDefault();touch[dir]=false};btn.addEventListener('pointerdown',on);btn.addEventListener('pointerup',off);btn.addEventListener('pointerleave',off);btn.addEventListener('pointercancel',off)});
+const fire=$('fireBtn');fire.addEventListener('pointerdown',e=>{e.preventDefault();touch.fire=true});['pointerup','pointerleave','pointercancel'].forEach(ev=>fire.addEventListener(ev,e=>{e.preventDefault();touch.fire=false}));
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='playing')pause()});
+drawArena(0);
+})();
+  </script>
+</body>
+</html>
